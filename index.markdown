@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 Calcule o custo dos ingredientes, o custo por unidade e o preço sugerido de venda dos seus produtos.
 
 <p>
