@@ -1,0 +1,217 @@
+---
+layout: default
+title: Calculadora de Receitas
+---
+
+<div class="container">
+
+    <h1>🍰 Calculadora de Receitas</h1>
+
+    <div class="card">
+
+        <h2>Ingredientes</h2>
+
+        <div id="ingredientes"></div>
+
+        <button onclick="adicionarIngrediente()">
+            ➕ Adicionar Ingrediente
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Produção</h2>
+
+        <label>Quantidade produzida:</label>
+        <input type="number" id="rendimento" value="1">
+
+        <label>Lucro desejado (%):</label>
+        <input type="number" id="lucro" value="100">
+
+        <button onclick="calcular()">
+            🧮 Calcular
+        </button>
+
+    </div>
+
+    <div class="card resultado">
+
+        <h2>Resultado</h2>
+
+        <p id="custoTotal">Custo Total: R$ 0,00</p>
+
+        <p id="custoUnitario">Custo por Unidade: R$ 0,00</p>
+
+        <p id="precoVenda">Preço de Venda: R$ 0,00</p>
+
+    </div>
+
+</div>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.card{
+    border:1px solid #ddd;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.item{
+    border:1px solid #eee;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:8px;
+    background:#fafafa;
+}
+
+input{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    margin-bottom:10px;
+    box-sizing:border-box;
+}
+
+button{
+    background:#0078d4;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#005fa3;
+}
+
+.remover{
+    background:#d83b01;
+}
+
+.remover:hover{
+    background:#b02d00;
+}
+
+.resultado{
+    background:#f5fdf5;
+}
+
+</style>
+
+<script>
+
+let contador = 0;
+
+function adicionarIngrediente() {
+
+    contador++;
+
+    const html = `
+
+    <div class="item">
+
+        <h3>Ingrediente ${contador}</h3>
+
+        <label>Nome:</label>
+        <input class="nome">
+
+        <label>Quantidade Comprada:</label>
+        <input type="number" class="comprada">
+
+        <label>Preço Pago (R$):</label>
+        <input type="number" step="0.01" class="preco">
+
+        <label>Quantidade Utilizada:</label>
+        <input type="number" class="usada">
+
+        <button class="remover" onclick="this.parentElement.remove()">
+            🗑 Remover
+        </button>
+
+    </div>
+
+    `;
+
+    document.getElementById("ingredientes")
+        .insertAdjacentHTML("beforeend", html);
+}
+
+function calcular(){
+
+    let total = 0;
+
+    const compradas =
+        document.querySelectorAll(".comprada");
+
+    const precos =
+        document.querySelectorAll(".preco");
+
+    const usadas =
+        document.querySelectorAll(".usada");
+
+    for(let i = 0; i < compradas.length; i++){
+
+        let qtdComprada =
+            parseFloat(compradas[i].value) || 0;
+
+        let preco =
+            parseFloat(precos[i].value) || 0;
+
+        let qtdUsada =
+            parseFloat(usadas[i].value) || 0;
+
+        if(qtdComprada > 0){
+
+            let custo =
+                (preco / qtdComprada)
+                * qtdUsada;
+
+            total += custo;
+        }
+    }
+
+    let rendimento =
+        parseFloat(
+            document.getElementById("rendimento").value
+        ) || 1;
+
+    let lucro =
+        parseFloat(
+            document.getElementById("lucro").value
+        ) || 0;
+
+    let custoUnitario =
+        total / rendimento;
+
+    let precoVenda =
+        custoUnitario *
+        (1 + (lucro / 100));
+
+    document.getElementById("custoTotal")
+        .innerHTML =
+        `Custo Total: R$ ${total.toFixed(2)}`;
+
+    document.getElementById("custoUnitario")
+        .innerHTML =
+        `Custo por Unidade: R$ ${custoUnitario.toFixed(2)}`;
+
+    document.getElementById("precoVenda")
+        .innerHTML =
+        `Preço de Venda: R$ ${precoVenda.toFixed(2)}`;
+}
+
+adicionarIngrediente();
+
+</script>

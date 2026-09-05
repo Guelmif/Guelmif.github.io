@@ -2,12 +2,10 @@
 layout: home
 ---
 
-# 🍰 Calculadora de Receitas
-
 Calcule o custo dos ingredientes, o custo por unidade e o preço sugerido de venda dos seus produtos.
 
 <p>
-    <a href="/calculadora.html"
+    <a href="/receitas.html"
        style="
           display:inline-block;
           padding:12px 24px;
