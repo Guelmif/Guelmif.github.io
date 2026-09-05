@@ -5,8 +5,6 @@ title: Calculadora de Receitas
 
 <div class="container">
 
-    <h1>🍰 Calculadora de Receitas</h1>
-
     <div class="card">
 
         <h2>Ingredientes</h2>
@@ -23,10 +21,10 @@ title: Calculadora de Receitas
 
         <h2>Produção</h2>
 
-        <label>Quantidade produzida:</label>
+        <label>Quantidade Produzida</label>
         <input type="number" id="rendimento" value="1">
 
-        <label>Lucro desejado (%):</label>
+        <label>Lucro Desejado (%)</label>
         <input type="number" id="lucro" value="100">
 
         <button onclick="calcular()">
@@ -39,11 +37,17 @@ title: Calculadora de Receitas
 
         <h2>Resultado</h2>
 
-        <p id="custoTotal">Custo Total: R$ 0,00</p>
+        <p id="custoTotal">
+            Custo Total: R$ 0,00
+        </p>
 
-        <p id="custoUnitario">Custo por Unidade: R$ 0,00</p>
+        <p id="custoUnitario">
+            Custo Unitário: R$ 0,00
+        </p>
 
-        <p id="precoVenda">Preço de Venda: R$ 0,00</p>
+        <p id="precoVenda">
+            Preço de Venda: R$ 0,00
+        </p>
 
     </div>
 
@@ -51,31 +55,27 @@ title: Calculadora de Receitas
 
 <style>
 
-body{
-    font-family: Arial, sans-serif;
-}
-
 .container{
-    max-width:900px;
+    max-width:1000px;
     margin:auto;
 }
 
 .card{
     border:1px solid #ddd;
-    padding:20px;
     border-radius:10px;
+    padding:20px;
     margin-bottom:20px;
 }
 
 .item{
     border:1px solid #eee;
+    border-radius:10px;
     padding:15px;
     margin-bottom:15px;
-    border-radius:8px;
     background:#fafafa;
 }
 
-input{
+input, select{
     width:100%;
     padding:8px;
     margin-top:5px;
@@ -97,15 +97,22 @@ button:hover{
 }
 
 .remover{
-    background:#d83b01;
+    background:#d13438;
 }
 
 .remover:hover{
-    background:#b02d00;
+    background:#a4262c;
 }
 
 .resultado{
-    background:#f5fdf5;
+    background:#f0fff4;
+}
+
+.embalagem{
+    display:none;
+    border-left:4px solid #0078d4;
+    padding-left:10px;
+    margin-top:10px;
 }
 
 </style>
@@ -114,38 +121,140 @@ button:hover{
 
 let contador = 0;
 
-function adicionarIngrediente() {
+function adicionarIngrediente(){
 
     contador++;
 
-    const html = `
+    let html = `
 
     <div class="item">
 
         <h3>Ingrediente ${contador}</h3>
 
-        <label>Nome:</label>
+        <label>Nome</label>
         <input class="nome">
 
-        <label>Quantidade Comprada:</label>
+        <label>Quantidade Comprada</label>
         <input type="number" class="comprada">
 
-        <label>Preço Pago (R$):</label>
+        <label>Unidade Comprada</label>
+        <select class="unidadeComprada"
+                onchange="mostrarConteudo(this)">
+
+            <option value="kg">Kg</option>
+            <option value="g">Gramas</option>
+            <option value="L">Litros</option>
+            <option value="ml">ml</option>
+            <option value="un">Unidade</option>
+            <option value="caixa">Caixa</option>
+            <option value="pacote">Pacote</option>
+            <option value="lata">Lata</option>
+
+        </select>
+
+        <div class="embalagem">
+
+            <h4>Conteúdo da Embalagem</h4>
+
+            <label>Quantidade</label>
+            <input type="number" class="conteudo">
+
+            <label>Unidade</label>
+            <select class="unidadeConteudo">
+
+                <option value="g">Gramas</option>
+                <option value="kg">Kg</option>
+                <option value="ml">ml</option>
+                <option value="L">Litros</option>
+                <option value="un">Unidade</option>
+
+            </select>
+
+        </div>
+
+        <label>Preço Pago (R$)</label>
         <input type="number" step="0.01" class="preco">
 
-        <label>Quantidade Utilizada:</label>
+        <label>Quantidade Utilizada</label>
         <input type="number" class="usada">
 
-        <button class="remover" onclick="this.parentElement.remove()">
+        <label>Unidade Utilizada</label>
+        <select class="unidadeUsada">
+
+            <option value="g">Gramas</option>
+            <option value="kg">Kg</option>
+            <option value="ml">ml</option>
+            <option value="L">Litros</option>
+            <option value="un">Unidade</option>
+
+        </select>
+
+        <button
+            class="remover"
+            onclick="this.parentElement.remove()">
+
             🗑 Remover
+
         </button>
 
     </div>
 
     `;
 
-    document.getElementById("ingredientes")
+    document
+        .getElementById("ingredientes")
         .insertAdjacentHTML("beforeend", html);
+}
+
+function mostrarConteudo(select){
+
+    const embalagem =
+        select.parentElement.querySelector(".embalagem");
+
+    if(
+        select.value === "caixa" ||
+        select.value === "pacote" ||
+        select.value === "lata"
+    ){
+        embalagem.style.display = "block";
+    }
+    else{
+        embalagem.style.display = "none";
+    }
+}
+
+function converter(valor, unidade){
+
+    switch(unidade){
+
+        case "kg":
+            return valor * 1000;
+
+        case "L":
+            return valor * 1000;
+
+        default:
+            return valor;
+    }
+}
+
+function grupo(unidade){
+
+    if(
+        unidade === "kg" ||
+        unidade === "g"
+    ){
+        return "peso";
+    }
+
+    if(
+        unidade === "L" ||
+        unidade === "ml"
+    ){
+        return "volume";
+    }
+
+    return "unidade";
 }
 
 function calcular(){
@@ -155,31 +264,105 @@ function calcular(){
     const compradas =
         document.querySelectorAll(".comprada");
 
-    const precos =
-        document.querySelectorAll(".preco");
-
     const usadas =
         document.querySelectorAll(".usada");
 
-    for(let i = 0; i < compradas.length; i++){
+    const precos =
+        document.querySelectorAll(".preco");
 
-        let qtdComprada =
-            parseFloat(compradas[i].value) || 0;
+    const unidadesCompra =
+        document.querySelectorAll(".unidadeComprada");
+
+    const unidadesUso =
+        document.querySelectorAll(".unidadeUsada");
+
+    const conteudos =
+        document.querySelectorAll(".conteudo");
+
+    const unidadesConteudo =
+        document.querySelectorAll(".unidadeConteudo");
+
+    for(let i = 0; i < compradas.length; i++){
 
         let preco =
             parseFloat(precos[i].value) || 0;
 
+        let qtdComprada =
+            parseFloat(compradas[i].value) || 0;
+
         let qtdUsada =
             parseFloat(usadas[i].value) || 0;
 
+        let unidadeCompra =
+            unidadesCompra[i].value;
+
+        let unidadeUso =
+            unidadesUso[i].value;
+
+        if(
+            unidadeCompra === "caixa" ||
+            unidadeCompra === "pacote" ||
+            unidadeCompra === "lata"
+        ){
+
+            let conteudo =
+                parseFloat(conteudos[i].value) || 0;
+
+            let unidadeConteudo =
+                unidadesConteudo[i].value;
+
+            if(
+                grupo(unidadeConteudo) !== grupo(unidadeUso)
+            ){
+                alert(
+                    "As unidades do ingrediente "
+                    + (i + 1)
+                    + " são incompatíveis."
+                );
+                return;
+            }
+
+            qtdComprada =
+                qtdComprada *
+                converter(
+                    conteudo,
+                    unidadeConteudo
+                );
+
+        }
+        else{
+
+            if(
+                grupo(unidadeCompra) !== grupo(unidadeUso)
+            ){
+                alert(
+                    "As unidades do ingrediente "
+                    + (i + 1)
+                    + " são incompatíveis."
+                );
+                return;
+            }
+
+            qtdComprada =
+                converter(
+                    qtdComprada,
+                    unidadeCompra
+                );
+        }
+
+        qtdUsada =
+            converter(
+                qtdUsada,
+                unidadeUso
+            );
+
         if(qtdComprada > 0){
 
-            let custo =
+            total +=
                 (preco / qtdComprada)
                 * qtdUsada;
-
-            total += custo;
         }
+
     }
 
     let rendimento =
@@ -199,15 +382,18 @@ function calcular(){
         custoUnitario *
         (1 + (lucro / 100));
 
-    document.getElementById("custoTotal")
+    document
+        .getElementById("custoTotal")
         .innerHTML =
         `Custo Total: R$ ${total.toFixed(2)}`;
 
-    document.getElementById("custoUnitario")
+    document
+        .getElementById("custoUnitario")
         .innerHTML =
-        `Custo por Unidade: R$ ${custoUnitario.toFixed(2)}`;
+        `Custo Unitário: R$ ${custoUnitario.toFixed(2)}`;
 
-    document.getElementById("precoVenda")
+    document
+        .getElementById("precoVenda")
         .innerHTML =
         `Preço de Venda: R$ ${precoVenda.toFixed(2)}`;
 }
