@@ -1,6 +1,16 @@
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
 layout: home
 ---
+
+# Calculadora de Receitas
+
+Bem-vindo ao sistema de cálculo de custos para receitas.
+
+## Ferramentas
+
+- /receitas.html
+
+Utilize a calculadora para descobrir:
+- Custo total da receita
+- Custo por unidade
+- Preço de venda sugerido
