@@ -1,12 +1,22 @@
-# Calculadora de Receitas
+---
+layout: home
+---
 
-Bem-vindo ao sistema de cálculo de custos para receitas.
+# 🍰 Calculadora de Receitas
 
-## Ferramentas
+Calcule o custo dos ingredientes, o custo por unidade e o preço sugerido de venda dos seus produtos.
 
-- /receitas.html
-
-Utilize a calculadora para descobrir:
-- Custo total da receita
-- Custo por unidade
-- Preço de venda sugerido
+<p>
+    <a href="/calculadora.html"
+       style="
+          display:inline-block;
+          padding:12px 24px;
+          background:#2e7d32;
+          color:white;
+          text-decoration:none;
+          border-radius:8px;
+          font-weight:bold;
+          font-size:18px;">
+        Acessar Calculadora
+    </a>
+</p>
