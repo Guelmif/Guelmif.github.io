@@ -1,7 +1,3 @@
----
-layout: home
----
-
 # Calculadora de Receitas
 
 Bem-vindo ao sistema de cálculo de custos para receitas.
